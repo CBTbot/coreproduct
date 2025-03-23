@@ -21,6 +21,23 @@ def greet():
      print("I can help you recognize thinking patterns and offer suggestions.")
      print("Type 'exit' anytime to end the chat.\n")
 
+#Asking for user's automatic thoughts 
+def get_thought():
+    thought = input("can you tell me about a negative thought you've been having recently?")
+    if thought.lower == 'exit':
+        return None
+    return thought
+
+#Identifying cognitive distortions 
+def cognitive_distortion(thought):
+    identified_distortions = []
+    for distorion, explanation in distortions.items():
+        if distorion.lower() in thought.lower():
+            identified_distortions.append((distorion,explanation))
+    return identified_distortions
+
+
+
 
 
 def app():
