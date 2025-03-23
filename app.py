@@ -1,4 +1,6 @@
 #CBT Bot
+import random
+
 
 
 def app():
