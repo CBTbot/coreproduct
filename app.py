@@ -17,7 +17,7 @@ distortions = {
 
 #initial chatbot greeting
 def greet():
-     print("Hi! I'm your CBT Assistant. Let's work together to challenge negative thoughts.")
+     print("Hello! I'm your CBT Assistant. Let's work together to challenge negative thoughts.")
      print("I can help you recognize thinking patterns and offer suggestions.")
      print("Type 'exit' anytime to end the chat.\n")
 
@@ -33,7 +33,7 @@ def cognitive_distortion(thought):
     identified_distortions = []
     for distorion, explanation in distortions.items():
         if distorion.lower() in thought.lower():
-            identified_distortions.append((distorion,explanation))
+            identified_distortions.append((distorion , explanation))
     return identified_distortions
 
 # Identifying cognitive distortions
@@ -49,7 +49,7 @@ def identify_distortion(thought):
 def challenge_thoughts(distortions):
     print("Let's examine your thought and challenge it!\n")
     for distortion, explanation in distortions:
-        print(f"Distortion{distortion}\n Explanation{explanation}")
+        print(f"Distortion {distortion}\n Explanation {explanation}")
     new_thought = input("\n What's a more balanced way of looking at this?")
     return new_thought
 
@@ -70,14 +70,14 @@ def cbt_chatbot():
         else:
             print(f'\nIt seems like your thought is more netural. Keep it up!')
 
-        cont = input("\nWould like you talk about another thought? (Yes/No)")
+        cont = input("\nWould like you talk about another thought? (Yes/No) ")
 
         if cont.lower() != 'yes':
             print('Goodbye!')
             break  
 
 
-def app():
-    pass
+
 if __name__ == "__main__":
-    app()
+    cbt_chatbot()
+    
