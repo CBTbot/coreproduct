@@ -1,5 +1,9 @@
 #CBT Bot
+#consider adding something like SpaCY for some natural language processing
+#i'll look up the documentation later on that in order to figure out what i need to do
+#next 
 import random
+import math
 
 #some cognitive distortion patterns 
 distortions = {
