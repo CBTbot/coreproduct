@@ -1,6 +1,3 @@
-# coreproduct
-This is the core application you can use to reduce your negative thought patterns. 
-
 
 ```
  ▓░▒█████   ▒█████   ████████     ▒█████   █████  ████████ 
@@ -13,3 +10,8 @@ This is the core application you can use to reduce your negative thought pattern
  ║  ├┤ └┬┘   ║ │ ││││
  ╚═╝└─┘ ┴    ╩ └─┘┘└┘
 ```
+
+# Welcome to the Cognitive Behavioral Therapy Bot 
+# I'm making this tool to learn Python a bit more as well. 
+
+TO DO: Add natural language processing 
