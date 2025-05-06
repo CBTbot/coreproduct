@@ -4,6 +4,11 @@
 #next 
 import random
 import math
+import spacy 
+
+nlp = spacy.load("en_core_web_sm")
+
+
 
 #some cognitive distortion patterns 
 distortions = {
