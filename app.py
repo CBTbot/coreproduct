@@ -33,10 +33,10 @@ distortion_phrases = {
 
     "all-or-nothing-thinking": [
         "I am  either a success or a failure",
-    "If I am not perfect, I am worthless",
-    "It's all good or all bad",
-    "I messed up, so the whole thing is ruined",
-    "I have to do everything right"
+        "If I am not perfect, I am worthless",
+        "It's all good or all bad",
+        "I messed up, so the whole thing is ruined",
+        "I have to do everything right"
     ],
 
     "mind reading": [
@@ -58,9 +58,23 @@ distortion_phrases = {
         "it feels hopeless, so it is",
         "I feel anxious, so something bad is going to happen",
         "if I feel this way, it must be true"
+    ],
+    "personalization": [
+        "this happened because of me", 
+        'it\'s my fault they\'re upset', 
+        "I should have done more",
+        "if I were better, this wouldn\t have happened" 
+    
+    ],
+    "labeling": [
+        "I'm such a a loser",
+        "He's a jerk",
+        "I'm an Idiot",
+        "They're all selfish",
+        "I'm broken"
     ]
     # Add more distortions as needed
-}
+    }
 
 #distortions = {
     #'All-or-nothing thinking': 'You see things in black-and-white terms, without acknowledging the gray areas in between.',
