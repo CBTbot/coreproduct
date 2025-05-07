@@ -12,18 +12,68 @@ nlp = spacy.load("en_core_web_sm")
 
 
 #some cognitive distortion patterns 
-distortions = {
-    'All-or-nothing thinking': 'You see things in black-and-white terms, without acknowledging the gray areas in between.',
-    'Overgeneralization': 'You view a single negative event as a never-ending pattern of defeat.',
-    'Mental filter': 'You focus on the negative aspects of a situation, ignoring the positive.',
-    'Disqualifying the positive': 'You reject positive experiences by insisting they don\’t count.',
-    'Jumping to conclusions': 'You make negative interpretations without actual evidence.',
-    'Catastrophizing': 'You expect the worst possible outcome or view a situation as far worse than it really is.',
-    'Emotional reasoning': 'You assume your negative emotions reflect objective reality.',
-    'Should statements': 'You criticize yourself or others with “shoulds,” “oughts,” or “musts.”',
-    'Labeling and mislabeling': 'You assign global negative labels to yourself or others based on a single event.',
-    'Personalization': 'You believe you are responsible for events outside your control.'
+
+
+distortion_phrases = {
+    "catastrophizing": [
+        "it's going to be a disaster",
+        "this is the worst thing ever",
+        "I can't handle this"
+    ],
+    "mind reading": [
+        "they must think I'm stupid",
+        "everyone hates me",
+        "they're judging me"
+    ],
+    "overgeneralization": [
+        "I always fail",
+        "nothing ever works out for me",
+        "this always happens"
+    ],
+
+    "all-or-nothing-thinking": [
+        "I am  either a success or a failure",
+    "If I am not perfect, I am worthless",
+    "It's all good or all bad",
+    "I messed up, so the whole thing is ruined",
+    "I have to do everything right"
+    ],
+
+    "mind reading": [
+        "they think I'm stupid",
+        "everyone's laughting at me",
+        "they don't like me",
+        "he must be annoyed with me",
+        "they think i'm a loser"
+    ], 
+    "fortune telling": [
+        "I know this will go wrong",
+        "it's going to be a disaster",
+        "they're going to reject me",
+        "this will end badly",
+        "nobody will show up"
+    ], 
+    "emotional reasoning":[
+        "I feel like a failure, so I must be one",
+        "it feels hopeless, so it is",
+        "I feel anxious, so something bad is going to happen",
+        "if I feel this way, it must be true"
+    ]
+    # Add more distortions as needed
 }
+
+#distortions = {
+    #'All-or-nothing thinking': 'You see things in black-and-white terms, without acknowledging the gray areas in between.',
+   # 'Overgeneralization': 'You view a single negative event as a never-ending pattern of defeat.',
+   # 'Mental filter': 'You focus on the negative aspects of a situation, ignoring the positive.',
+    #'Disqualifying the positive': 'You reject positive experiences by insisting they don\’t count.',
+   # 'Jumping to conclusions': 'You make negative interpretations without actual evidence.',
+  #  'Catastrophizing': 'You expect the worst possible outcome or view a situation as far worse than it really is.',
+  #  'Emotional reasoning': 'You assume your negative emotions reflect objective reality.',
+  #  'Should statements': 'You criticize yourself or others with “shoulds,” “oughts,” or “musts.”',
+  #  'Labeling and mislabeling': 'You assign global negative labels to yourself or others based on a single event.',
+  #  'Personalization': 'You believe you are responsible for events outside your control.'
+#}
 
 #initial chatbot greeting
 def greet():
