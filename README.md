@@ -13,3 +13,5 @@
 # I'm making this tool to learn Python a bit more as well. 
 
 TO DO: Add natural language processing 
+- Working on that currently with spacy 
+
