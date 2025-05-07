@@ -78,6 +78,57 @@ def detect_distortions(text, similarity_threshold=0.85):
 
     return results
 
+
+
+
+cbt_responses = {
+    "catastrophizing": "It sounds like you're imagining the worst-case scenario. What are some more realistic outcomes that could happen?",
+    "overgeneralization": "Are you basing this on one experience, or is there evidence it always happens? What might be an exception to this thought?",
+    "all-or-nothing thinking": "Are things really all bad, or is there some middle ground? What would a more balanced view look like?",
+    "mind reading": "How do you know what they’re thinking? Could there be another explanation for their behavior?",
+    "fortune telling": "Is there real evidence this will happen, or is this a prediction? What might go right instead?",
+    "emotional reasoning": "Just because you feel it doesn’t mean it’s true. Can you separate the feeling from the facts?",
+    "personalization": "Are you taking responsibility for something that isn’t entirely in your control? Who else might be involved?",
+    "labeling": "Instead of labeling yourself, what specific behavior are you unhappy with? What would you say to a friend in your shoes?",
+    "should statements": "Are these 'shoulds' helping or hurting you? Can you reframe this thought in a kinder, more flexible way?"
+}
+
+def detect_distortions_with_cbt(text, similarity_threshold=0.85):
+    doc = nlp(text)
+    results = []
+
+    matches = phrase_matcher(doc)
+    seen_types = set()
+
+    for match_id, start, end in matches:
+        span = doc[start:end]
+        label = nlp.vocab.strings[match_id].lower()
+        seen_types.add(label)
+        results.append({
+            "type": label,
+            "match": span.text,
+            "method": "exact",
+            "cbt_response": cbt_responses.get(label)
+        })
+
+    for label, phrases in distortion_phrases.items():
+        if label in seen_types:
+            continue  # Skip if already matched exactly
+        for phrase in phrases:
+            phrase_doc = nlp(phrase)
+            sim = doc.similarity(phrase_doc)
+            if sim >= similarity_threshold:
+                results.append({
+                    "type": label,
+                    "match": phrase,
+                    "method": f"similarity ({sim:.2f})",
+                    "cbt_response": cbt_responses.get(label)
+                })
+                seen_types.add(label)
+                break  # Avoid multiple matches for the same distortion
+
+    return results
+
 #distortions = {
     #'All-or-nothing thinking': 'You see things in black-and-white terms, without acknowledging the gray areas in between.',
    # 'Overgeneralization': 'You view a single negative event as a never-ending pattern of defeat.',
