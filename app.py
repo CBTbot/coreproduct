@@ -1,90 +1,57 @@
 #CBT Bot
-#consider adding something like SpaCY for some natural language processing
-#i'll look up the documentation later on that in order to figure out what i need to do
-#next 
+ 
 import random
 import math
 import spacy
 from spacy.matcher import PhraseMatcher
 
 
-nlp = spacy.load("en_core_web_sm")
-
-
-#some cognitive distortion patterns 
-
 # Load model with word vectors for similarity
+# Load spaCy model with word vectors
 nlp = spacy.load("en_core_web_md")
 
-# Your distortion phrase dictionary
+# Distortion phrases
 distortion_phrases = {
     "catastrophizing": [
-        "this is going to ruin everything",
-        "I’ll never recover from this",
-        "it’s all falling apart",
-        "I’m doomed",
-        "this will end terribly"
+        "this is going to ruin everything", "I’ll never recover from this",
+        "it’s all falling apart", "I’m doomed", "this will end terribly"
     ],
     "overgeneralization": [
-        "I always screw things up",
-        "nothing ever works out for me",
-        "everything I do fails",
-        "no one ever listens to me",
-        "it’s always my fault"
+        "I always screw things up", "nothing ever works out for me",
+        "everything I do fails", "no one ever listens to me", "it’s always my fault"
     ],
     "mind reading": [
-        "they think I’m stupid",
-        "everyone’s laughing at me",
-        "they don’t like me",
-        "he must be annoyed with me",
-        "they think I’m a loser"
+        "they think I’m stupid", "everyone’s laughing at me",
+        "they don’t like me", "he must be annoyed with me", "they think I’m a loser"
     ],
-    # Add more distortions here as needed...
+    "fortune telling": [
+        "I know this will go wrong", "it’s going to be a disaster",
+        "they’re going to reject me", "this will end badly", "nobody will show up"
+    ],
+    "emotional reasoning": [
+        "I feel like a failure, so I must be one",
+        "it feels hopeless, so it is",
+        "I feel anxious, so something bad is going to happen",
+        "if I feel this way, it must be true"
+    ],
+    "personalization": [
+        "this happened because of me", "it’s my fault they’re upset",
+        "I should have done more", "if I were better, this wouldn't have happened"
+    ],
+    "labeling": [
+        "I’m such a loser", "he’s a jerk", "I’m an idiot",
+        "they’re all selfish", "I’m broken"
+    ],
+    "should statements": [
+        "I should be better at this", "they should know what I need",
+        "I shouldn’t feel this way", "I have to succeed", "I must always be in control"
+    ]
 }
 
-# Set up PhraseMatcher
-phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
-for label, phrases in distortion_phrases.items():
-    patterns = [nlp.make_doc(phrase) for phrase in phrases]
-    phrase_matcher.add(label.upper(), patterns)
-
-# Unified detection function
-def detect_distortions(text, similarity_threshold=0.85):
-    doc = nlp(text)
-    results = []
-
-    # --- Exact Phrase Matching ---
-    matches = phrase_matcher(doc)
-    for match_id, start, end in matches:
-        span = doc[start:end]
-        label = nlp.vocab.strings[match_id]
-        results.append({
-            "type": label.lower(),
-            "match": span.text,
-            "method": "exact"
-        })
-
-    # --- Fuzzy Similarity Matching ---
-    for label, phrases in distortion_phrases.items():
-        for phrase in phrases:
-            phrase_doc = nlp(phrase)
-            sim = doc.similarity(phrase_doc)
-            if sim >= similarity_threshold:
-                results.append({
-                    "type": label,
-                    "match": phrase,
-                    "method": f"similarity ({sim:.2f})"
-                })
-
-    return results
-
-
-
-
+# CBT responses
 cbt_responses = {
     "catastrophizing": "It sounds like you're imagining the worst-case scenario. What are some more realistic outcomes that could happen?",
     "overgeneralization": "Are you basing this on one experience, or is there evidence it always happens? What might be an exception to this thought?",
-    "all-or-nothing thinking": "Are things really all bad, or is there some middle ground? What would a more balanced view look like?",
     "mind reading": "How do you know what they’re thinking? Could there be another explanation for their behavior?",
     "fortune telling": "Is there real evidence this will happen, or is this a prediction? What might go right instead?",
     "emotional reasoning": "Just because you feel it doesn’t mean it’s true. Can you separate the feeling from the facts?",
@@ -93,6 +60,13 @@ cbt_responses = {
     "should statements": "Are these 'shoulds' helping or hurting you? Can you reframe this thought in a kinder, more flexible way?"
 }
 
+# Set up PhraseMatcher
+phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
+for label, phrases in distortion_phrases.items():
+    patterns = [nlp.make_doc(phrase) for phrase in phrases]
+    phrase_matcher.add(label.upper(), patterns)
+
+# Main detection function
 def detect_distortions_with_cbt(text, similarity_threshold=0.85):
     doc = nlp(text)
     results = []
@@ -101,19 +75,19 @@ def detect_distortions_with_cbt(text, similarity_threshold=0.85):
     seen_types = set()
 
     for match_id, start, end in matches:
-        span = doc[start:end]
         label = nlp.vocab.strings[match_id].lower()
-        seen_types.add(label)
-        results.append({
-            "type": label,
-            "match": span.text,
-            "method": "exact",
-            "cbt_response": cbt_responses.get(label)
-        })
+        if label not in seen_types:
+            seen_types.add(label)
+            results.append({
+                "type": label,
+                "match": doc[start:end].text,
+                "method": "exact",
+                "cbt_response": cbt_responses.get(label)
+            })
 
     for label, phrases in distortion_phrases.items():
         if label in seen_types:
-            continue  # Skip if already matched exactly
+            continue
         for phrase in phrases:
             phrase_doc = nlp(phrase)
             sim = doc.similarity(phrase_doc)
@@ -125,9 +99,28 @@ def detect_distortions_with_cbt(text, similarity_threshold=0.85):
                     "cbt_response": cbt_responses.get(label)
                 })
                 seen_types.add(label)
-                break  # Avoid multiple matches for the same distortion
+                break
 
     return results
+
+# 🧠 Chatbot loop
+print("🧠 CBT Chatbot: Let's talk. Type 'exit' to end.\n")
+
+while True:
+    user_input = input("You: ")
+    if user_input.lower() in ("exit", "quit"):
+        print("CBT Bot: Take care! Have a good day 👋")
+        break
+
+    results = detect_distortions_with_cbt(user_input)
+
+    if results:
+        for r in results:
+            print(f"\n⚠️ Detected distortion: *{r['type']}* ({r['method']})")
+            print(f"🔍 Example phrase: \"{r['match']}\"")
+            print(f"💬 CBT reflection: {r['cbt_response']}\n")
+    else:
+        print("✅ No distortions detected. You seem to be thinking clearly. 😊\n")
 
 #distortions = {
     #'All-or-nothing thinking': 'You see things in black-and-white terms, without acknowledging the gray areas in between.',
