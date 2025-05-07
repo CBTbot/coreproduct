@@ -5,7 +5,7 @@
 import random
 import math
 import spacy
-
+from spacy.matcher import PhraseMatcher
 
 
 nlp = spacy.load("en_core_web_sm")
@@ -72,9 +72,24 @@ distortion_phrases = {
         "I'm an Idiot",
         "They're all selfish",
         "I'm broken"
+    ],
+
+    "should statements": [
+        "I should be better than this", 
+        "they should know what I need",
+        "I shouldn\'t feel this way",
+        "I have to succeed",
+        "I must always be In control"
     ]
     # Add more distortions as needed
     }
+
+
+matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
+
+for label, phrases in distortion_phrases.items():
+    patterns = [nlp.make_doc(phrase) for phrase in phrases]
+    matcher.add(label.upper(), patterns)
 
 #distortions = {
     #'All-or-nothing thinking': 'You see things in black-and-white terms, without acknowledging the gray areas in between.',
