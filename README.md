@@ -16,3 +16,4 @@ TO DO: Add natural language processing
 - Working on that currently with spacy
 - Adding sentiment analysis
 - Adding potential emojis
+- Fix Lemmoization
